@@ -1,0 +1,1034 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#190b16">
+  <title>حكايتنا ❤️</title>
+
+  <!-- الجزء الثاني: التصميم CSS -->
+  <style>
+ 
+/* ===== 1. الألوان والإعدادات العامة ===== */
+:root {
+  --bg: #190b16;
+  --bg-light: #26101f;
+  --pink: #f5a7c8;
+  --pink-light: #ffd8e8;
+  --wine: #9c365e;
+  --text: #fff3f7;
+  --muted: #c6aab8;
+  --border: rgba(255, 210, 230, .14);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Tahoma, Arial, sans-serif;
+  line-height: 1.9;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, audio {
+  font: inherit;
+}
+
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--pink);
+  color: var(--bg);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ===== 2. خلفية القلوب ===== */
+.hearts-bg {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.heart-particle {
+  position: absolute;
+  bottom: -60px;
+  color: var(--pink);
+  opacity: 0;
+  animation: floatHeart linear forwards;
+  text-shadow: 0 0 18px rgba(245, 167, 200, .5);
+}
+
+@keyframes floatHeart {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(.7);
+    opacity: 0;
+  }
+  12% {
+    opacity: .55;
+  }
+  80% {
+    opacity: .35;
+  }
+  100% {
+    transform: translateY(-115vh) rotate(35deg) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* ===== 3. شاشة المفاجأة ===== */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 24px;
+  background:
+    radial-gradient(ellipse at 50% 40%,
+      rgba(133, 39, 84, .28), transparent 55%),
+    linear-gradient(145deg, #120812, #29101f 55%, #160913);
+  transition: opacity .8s ease, transform .8s ease;
+}
+
+.intro.leaving {
+  opacity: 0;
+  transform: scale(1.08);
+  pointer-events: none;
+}
+
+.intro-content {
+  width: min(100%, 580px);
+  animation: introAppear 1.2s ease both;
+}
+
+@keyframes introAppear {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.small-heart {
+  font-size: 45px;
+  color: var(--pink);
+  animation: heartbeat 1.5s infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.16); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.1); }
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--pink);
+  font-weight: bold;
+}
+
+.intro h1 {
+  font-size: clamp(48px, 10vw, 78px);
+  line-height: 1.35;
+  margin: 10px 0;
+  letter-spacing: -2px;
+}
+
+.intro h1 span {
+  color: var(--pink);
+}
+
+.intro-text {
+  max-width: 410px;
+  margin: 18px auto 30px;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.open-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 13px 30px;
+  border: 1px solid rgba(255, 216, 232, .5);
+  border-radius: 50px;
+  color: #35101f;
+  background: linear-gradient(135deg, #ffd8e8, #e99abb);
+  cursor: pointer;
+  box-shadow: 0 0 35px rgba(245, 167, 200, .17);
+  transition: transform .25s, box-shadow .25s;
+}
+
+.open-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 45px rgba(245, 167, 200, .32);
+}
+
+.intro-footer {
+  margin-top: 35px;
+  font-size: 11px;
+  color: #9f7f90;
+}
+
+/* ===== 4. القائمة العلوية ===== */
+.website {
+  position: relative;
+  z-index: 1;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 7%;
+  background: rgba(25, 11, 22, .82);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-size: 19px;
+  font-weight: bold;
+}
+
+.logo span {
+  color: var(--pink);
+}
+
+.nav-link {
+  color: var(--pink-light);
+  font-size: 13px;
+}
+
+/* ===== 5. القسم الرئيسي ===== */
+.hero {
+  min-height: 78vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 70px 24px 35px;
+  position: relative;
+  background:
+    radial-gradient(ellipse at 50% 65%,
+      rgba(139, 40, 85, .17), transparent 60%);
+}
+
+.hero h1 {
+  font-size: clamp(44px, 8vw, 76px);
+  line-height: 1.45;
+  margin: 5px 0 12px;
+}
+
+.hero h1 span {
+  color: var(--pink);
+  text-shadow: 0 0 30px rgba(245, 167, 200, .25);
+}
+
+.hero-text {
+  color: var(--muted);
+  max-width: 490px;
+  margin: 0 auto 28px;
+}
+
+.primary-link {
+  background: var(--pink-light);
+  color: #35101f;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-size: 14px;
+  transition: transform .25s;
+}
+
+.primary-link:hover {
+  transform: translateY(-3px);
+}
+
+.hero-heart {
+  font-size: 65px;
+  color: rgba(245, 167, 200, .4);
+  margin-top: 25px;
+  animation: heartbeat 2s infinite;
+}
+
+/* ===== 6. الأقسام العامة ===== */
+.section {
+  padding: 90px 7%;
+  max-width: 1450px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.section h2 {
+  font-size: clamp(26px, 4vw, 38px);
+  margin: 0 0 10px;
+}
+
+.section-desc {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0 auto 38px;
+  max-width: 540px;
+}
+
+/* ===== 7. عداد الوقت ===== */
+.counter-section {
+  max-width: none;
+  background:
+    radial-gradient(ellipse at center,
+      rgba(119, 34, 73, .18), transparent 70%);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.counter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  direction: rtl;
+  margin: 35px auto 20px;
+}
+
+.time-box {
+  width: 120px;
+  min-height: 112px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .035);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+}
+
+.time-box strong {
+  font-size: 34px;
+  line-height: 1.3;
+  color: var(--pink-light);
+  font-variant-numeric: tabular-nums;
+}
+
+.time-box span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.date-note {
+  color: #ad8b9c;
+  font-size: 12px;
+}
+
+/* ===== 8. كروت الذكريات ===== */
+.memory-grid,
+.music-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  text-align: right;
+}
+
+.memory-card,
+.music-card {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: linear-gradient(145deg,
+    rgba(255, 255, 255, .055),
+    rgba(255, 255, 255, .018));
+  transition: transform .3s, border-color .3s;
+}
+
+.memory-card:hover,
+.music-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(245, 167, 200, .4);
+}
+
+.media-frame {
+  width: 100%;
+  aspect-ratio: 4 / 4.5;
+  overflow: hidden;
+  background: #301525;
+}
+
+.media-frame img,
+.media-frame video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-frame {
+  aspect-ratio: 4 / 4.5;
+}
+
+.video-frame video {
+  background: #10080f;
+}
+
+.card-caption {
+  padding: 20px;
+}
+
+.card-caption > span,
+.music-label {
+  color: var(--pink);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+}
+
+.card-caption h3,
+.music-card h3 {
+  font-size: 17px;
+  margin: 8px 0;
+}
+
+.card-caption p,
+.music-card p {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 0;
+}
+
+/* ===== 9. ركن الموسيقى ===== */
+.music-section {
+  max-width: none;
+  background: rgba(255, 255, 255, .018);
+}
+
+.music-grid {
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+.music-card {
+  text-align: center;
+  padding: 28px 20px;
+}
+
+.vinyl {
+  width: 85px;
+  height: 85px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  font-size: 32px;
+  color: var(--pink-light);
+  background:
+    radial-gradient(circle, #f5a7c8 0 5%,
+      #321124 6% 13%, transparent 14%),
+    repeating-radial-gradient(circle,
+      #311324 0 3px, #1c0b17 4px 7px);
+  box-shadow: 0 0 25px rgba(245, 167, 200, .13);
+}
+
+.music-card audio {
+  width: 100%;
+  height: 42px;
+  margin-top: 22px;
+  accent-color: var(--pink);
+}
+
+/* ===== 10. رسالة الحب ===== */
+.letter-section {
+  padding-bottom: 110px;
+}
+
+.letter-paper {
+  position: relative;
+  max-width: 720px;
+  margin: 35px auto 0;
+  padding: 45px clamp(22px, 6vw, 65px);
+  background: linear-gradient(145deg, #fff0f5, #f4dce7);
+  color: #54223a;
+  border-radius: 4px 22px 4px 22px;
+  box-shadow: 0 20px 70px rgba(0, 0, 0, .18);
+  transform: rotate(-.5deg);
+}
+
+.letter-symbol {
+  color: #b74e78;
+  font-size: 28px;
+}
+
+.letter-paper h3 {
+  font-size: 23px;
+  margin: 8px 0 25px;
+}
+
+.love-letter {
+  white-space: pre-wrap;
+  text-align: right;
+  line-height: 2.3;
+  font-size: 15px;
+}
+
+.signature {
+  margin-top: 30px;
+  color: #9b4267;
+  font-weight: bold;
+}
+
+/* ===== 11. نهاية الموقع ===== */
+.footer {
+  padding: 40px 20px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  background: rgba(0, 0, 0, .1);
+}
+
+.footer-heart {
+  color: var(--pink);
+  font-size: 25px;
+}
+
+.footer p {
+  margin: 5px 0;
+}
+
+.footer span {
+  font-size: 11px;
+  color: #9f7f90;
+}
+
+/* ===== 12. الموبايل والشاشات الصغيرة ===== */
+@media (max-width: 800px) {
+  .memory-grid,
+  .music-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .section {
+    padding: 65px 5%;
+  }
+
+  .time-box {
+    width: 105px;
+  }
+}
+
+@media (max-width: 520px) {
+  .memory-grid,
+  .music-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    padding: 12px 5%;
+  }
+
+  .hero {
+    min-height: 70vh;
+  }
+
+  .time-box {
+    width: calc(50% - 8px);
+    min-height: 100px;
+  }
+
+  .counter {
+    gap: 12px;
+  }
+
+  .card-caption {
+    padding: 18px;
+  }
+
+  .letter-paper {
+    padding: 30px 22px;
+  }
+
+  .intro-text {
+    font-size: 14px;
+  }
+}
+
+/* احترام إعداد تقليل الحركة */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+  </style>
+</head>
+
+<body>
+
+  <!-- القلوب المتحركة في الخلفية -->
+  <div class="hearts-bg" id="hearts"></div>
+
+  <!-- شاشة المفاجأة -->
+  <section class="intro" id="intro">
+    <div class="intro-content">
+      <div class="small-heart">♥</div>
+      <p class="eyebrow">A LITTLE WORLD FOR US</p>
+      <h1>حكايتنا <span>❤️</span></h1>
+      <p class="intro-text">
+        في حكايات كتير في الدنيا...
+        بس حكايتي المفضلة هي حكايتنا إحنا.
+      </p>
+
+      <button class="open-btn" id="openBtn">
+        <span>افتحي عالمنا</span>
+        <span>♥</span>
+      </button>
+
+      <p class="intro-footer">صُنِع بكل الحب، مخصوص ليكي</p>
+    </div>
+  </section>
+
+  <!-- الموقع الرئيسي -->
+  <main class="website hidden" id="website">
+
+    <header class="topbar">
+      <a href="#home" class="logo">حكايتنا <span>♥</span></a>
+      <a href="#letter" class="nav-link">رسالة ليكي 💌</a>
+    </header>
+
+    <!-- القسم الرئيسي -->
+    <section class="hero" id="home">
+      <p class="eyebrow">OUR LITTLE UNIVERSE</p>
+      <h1>أجمل صدفة<br>كانت <span>انتي</span></h1>
+      <p class="hero-text">
+        هنا عايز أحفظ كل حاجة حلوة بينا...
+        كل صورة، وكل أغنية، وكل لحظة بتفكرني بيكي.
+      </p>
+      <a href="#memories" class="primary-link">نرجع لذكرياتنا ♥</a>
+      <div class="hero-heart">♡</div>
+    </section>
+
+    <!-- عداد الوقت -->
+    <section class="section counter-section">
+      <p class="eyebrow">SINCE OUR FIRST HELLO</p>
+      <h2>من أول ما بدأنا نتكلم 🥹</h2>
+      <p class="section-desc">
+        من يومها، وكل يوم بقى ليه حكاية.
+      </p>
+
+      <div class="counter" id="counter">
+        <div class="time-box">
+          <strong id="days">0</strong>
+          <span>يوم</span>
+        </div>
+        <div class="time-box">
+          <strong id="hours">00</strong>
+          <span>ساعة</span>
+        </div>
+        <div class="time-box">
+          <strong id="minutes">00</strong>
+          <span>دقيقة</span>
+        </div>
+        <div class="time-box">
+          <strong id="seconds">00</strong>
+          <span>ثانية</span>
+        </div>
+      </div>
+
+      <p class="date-note">
+        19 مارس 2026 · الساعة 1:08 صباحًا
+      </p>
+    </section>
+
+    <!-- ألبوم الصور والفيديو -->
+    <section class="section" id="memories">
+      <p class="eyebrow">OUR MEMORIES</p>
+      <h2>حاجات صغيرة، بس عندي بالدنيا ❤️</h2>
+      <p class="section-desc">
+        صور يمكن تكون عادية لأي حد، بس بالنسبالي ليها حكاية.
+      </p>
+
+      <div class="memory-grid">
+
+        <article class="memory-card">
+          <div class="media-frame">
+            <img src="images/my-photo.jpg"
+                 alt="صورتي اللي بتحبيها">
+          </div>
+          <div class="card-caption">
+            <span>01 / YOU LOVE THIS ONE</span>
+            <h3>الصورة اللي بتحبيها ليا</h3>
+            <p>هنا هحط الصورة اللي بتحبيها ❤️</p>
+          </div>
+        </article>
+
+        <article class="memory-card">
+          <div class="media-frame">
+            <img src="images/her-photo.jpg"
+                 alt="صورتها المفضلة عندي">
+          </div>
+          <div class="card-caption">
+            <span>02 / MY FAVORITE</span>
+            <h3>الصورة اللي بحبها ليكي</h3>
+            <p>الصورة اللي كل ما أشوفها أبتسم من غير ما أحس.</p>
+          </div>
+        </article>
+
+        <article class="memory-card">
+          <div class="media-frame video-frame">
+            <video controls playsinline preload="metadata">
+              <source src="videos/her-video.mp4" type="video/mp4">
+              المتصفح لا يدعم تشغيل الفيديو.
+            </video>
+          </div>
+          <div class="card-caption">
+            <span>03 / A MOMENT TO KEEP</span>
+            <h3>فيديو بحبه أوي</h3>
+            <p>لحظة نفسي أفضل أفتكرها دايمًا.</p>
+          </div>
+        </article>
+
+<article class="memory-card">
+  <div class="media-frame video-frame">
+    <video controls playsinline preload="metadata">
+      <source src="videos/our-song.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <div class="card-caption">
+    <span>A SONG THAT FEELS LIKE US</span>
+    <h3>الفيديو ده بيفكرني بيكي ❤️</h3>
+    <p>الأغنية دي بتعبّر عن إحساسي ناحيتك.</p>
+  </div>
+</article>
+<article class="memory-card">
+  <video controls playsinline preload="metadata">
+    <source src="videos/her-favorite-video.mp4" type="video/mp4">
+  </video>
+  <h3>ده فيديو أنا بحبه قوي ❤️</h3>
+  <p>فيديو ليها بحب أرجع أشوفه كل شوية.</p>
+</article>
+
+<article class="memory-card">
+  <video controls playsinline preload="metadata">
+    <source src="videos/tiktok-video.mp4" type="video/mp4">
+  </video>
+  <h3>الفيديو ده بيفكرني بإحساس حزين 🖤</h3>
+  <p>فيديو بيفكرني بمشاعر صعب أوصفها.</p>
+</article>
+      </div>
+    </section>
+
+    <!-- ركن الأغاني -->
+    <section class="section music-section" id="music">
+      <p class="eyebrow">SOUNDTRACK OF US</p>
+      <h2>أغانينا 🎶</h2>
+      <p class="section-desc">
+     في اغاني بنسمعها و في اغاني بنعيشها
+      </p>
+
+      <div class="music-grid">
+
+        <article class="music-card">
+          <div class="vinyl">♫</div>
+          <span class="music-label">HER SONG</span>
+          <h3>أغنيتك اللي بتفكرك بيا</h3>
+          <p>كل ما تسمعيها، افتكري إن في حد بيحبك.</p>
+          <audio controls preload="metadata">
+            <source src="audio/her-song.mp3" type="audio/mpeg">
+            المتصفح لا يدعم تشغيل الصوت.
+          </audio>
+        </article>
+
+        <article class="music-card">
+          <div class="vinyl">♡</div>
+          <span class="music-label">MY SONG</span>
+          <h3>أغنيتي اللي بتفكرني بيكي</h3>
+          <p>الأغنية اللي كل مرة بسمعها بلاقيكي في بالي.</p>
+          <audio controls preload="metadata">
+            <source src="audio/my-song.mp3" type="audio/mpeg">
+            المتصفح لا يدعم تشغيل الصوت.
+          </audio>
+        </article>
+
+        <article class="music-card">
+          <div class="vinyl">♪</div>
+          <span class="music-label">YOUR VOICE</span>
+          <h3>صوتك وإنتِ بتغني</h3>
+          <p>تسجيل صغير لصوت بحب أسمعه.</p>
+          <audio controls preload="metadata">
+            <source src="audio/her-singing.mp3" type="audio/mpeg">
+            المتصفح لا يدعم تشغيل الصوت.
+          </audio>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- رسالة الحب -->
+    <section class="section letter-section" id="letter">
+      <p class="eyebrow">A LETTER FROM MY HEART</p>
+      <h2>في كلام مخصوص ليكي 💌</h2>
+
+      <div class="letter-paper">
+        <div class="letter-symbol">♥</div>
+        <h3>إلى أجمل حد في حكايتي...</h3>
+
+        <!-- اكتب رسالتك مكان الكلام ده -->
+        <p class="love-letter">
+         
+<p>
+بصي بقاا أنا عامل الموقع دا ليكي انتي مخصوص بجد، خد مني وقت كتيييييير أوي عقبال ما كنت خلصته، ما علينا المهم فداكي الدنيا كلهااا ❤️
+</p>
+
+<p>
+بصي بقااا أنااااا بحبك أويييي والله بحبك أوييي، وبموت فيكي بعشقككك موووووت أقسم بالله، وكمااان وحشتيني، فاسكتي بقى علشان وحشتيني أوييي 😭❤️
+</p>
+
+<p>
+المهم متزعليش مني يا نور عيني، حقك عليا والله لو بزعلك مني أو بعمل حاجات بتضايقك أو لو بتعصب عليكي، بجد والله انتي أقرب شخص ليا، انتي حبيبتي ومراتي وخطيبتي ودنيتي كلهااا وأكتر كمان، فمش عاوزك تكوني زعلانة مني، حقك عليا والله بجد.
+</p>
+
+<p>
+ربنا يخليكي ليا يا عمري وميحرمنيش منك أبداً، بجد انتي أحسن وأحلى وأجمل صدفة عدت عليا في حياتي، بجد من ساعة ما عرفتك وأنا كل حاجة حلوة بتحصلي.
+</p>
+
+<p>
+بجد وجودك جنبي ومعايا على طول في أي حاجة بيفرق معايا جداً، ربنا يخليكي ليا يا حياتي، بجد بحبك أوي ومقدرش أستغنى عنك أبداً.
+</p>
+
+<p>
+قد إيه بكون مبسوط لما بصحى من النوم ألاقيكي باعتالي صباح الخير أو رسايل كتير أوي ورا بعض، بجد بكون مبسوط جداً وفرحان أوي والله ❤️
+</p>
+
+<p>
+وقد إيه بكون خايف عليكي وقلقان عليكي من ساعة ما بتطلعي من البيت، حتى لو رايحة فين، بخاف عليكي من نظرات الناس، وبحس بغيرة عليكي علشان انتي غالية عندي أوي.
+</p>
+
+<p>
+وبجد بحترمك أوي يا باسمين، أنا بجد بحبك أوي ❤️
+</p>
+
+<p>
+الموقع دا معمول علشانك انتي، معمول ليكي انتي، معمول فيه كل حاجة بتحبيها، بجد بحبك أويييييي.
+</p>
+
+<p>
+بتمنى من كل قلبي إنك كل ما تفتحيه تكوني مبسوطة، وتعرفي إن في حد عمل كل دا علشانك انتي مخصوص، لأنك أغلى حاجة عنده.
+</p>
+
+<p>
+وبتمنى كمان إننا نفضل مع بعض طول العمر، بحبككك أوي يا حياتي 😭😭😭🫂🫂🫂❤️❤️❤️🥺🥺😘
+</p>
+
+        </p>
+
+        <p class="signature">من قلبي لقلبك، بكل الحب ♥</p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-heart">♥</div>
+      <p>حكايتنا لسه بتتكتب...</p>
+      <span>Made with love · 2026</span>
+    </footer>
+
+  </main>
+
+  <!-- أغنية خلفية تبدأ بعد الضغط على زر المفاجأة -->
+  <audio id="backgroundMusic" loop preload="auto">
+    <source src="audio/background-song.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- الجزء الثالث: كود JavaScript -->
+  <script>
+   
+/* ===== 1. عناصر الموقع ===== */
+const intro = document.getElementById("intro");
+const website = document.getElementById("website");
+const openBtn = document.getElementById("openBtn");
+const backgroundMusic = document.getElementById("backgroundMusic");
+const heartsContainer = document.getElementById("hearts");
+
+/* ===== 2. فتح عالم الذكريات ===== */
+openBtn.addEventListener("click", async () => {
+  // بدء الأغنية بعد ضغطة المستخدم
+  backgroundMusic.volume = 0.35;
+
+  try {
+    await backgroundMusic.play();
+  } catch (error) {
+    console.log("اضغط على زر تشغيل الصوت لو الأغنية لم تبدأ.");
+  }
+
+  // إظهار الموقع وإخفاء شاشة البداية
+  website.classList.remove("hidden");
+  intro.classList.add("leaving");
+
+  // إظهار الصفحة بسلاسة بعد انتهاء الانتقال
+  setTimeout(() => {
+    intro.style.display = "none";
+  }, 850);
+
+  // الانتقال لبداية الموقع
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+/* ===== 3. عداد الوقت من أول كلام بينكم ===== */
+
+// 19 مارس 2026 الساعة 1:08 صباحًا بتوقيت مصر.
+// هذا التوقيت يساوي 18 مارس 2026 الساعة 23:08 UTC.
+const startDate = new Date("2026-03-18T23:08:00Z");
+
+const daysElement = document.getElementById("days");
+const hoursElement = document.getElementById("hours");
+const minutesElement = document.getElementById("minutes");
+const secondsElement = document.getElementById("seconds");
+
+function updateCounter() {
+  const now = Date.now();
+  const difference = now - startDate.getTime();
+
+  if (difference < 0) {
+    daysElement.textContent = "0";
+    hoursElement.textContent = "00";
+    minutesElement.textContent = "00";
+    secondsElement.textContent = "00";
+    return;
+  }
+
+  const totalSeconds = Math.floor(difference / 1000);
+
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  daysElement.textContent = days.toLocaleString("en-US");
+  hoursElement.textContent = String(hours).padStart(2, "0");
+  minutesElement.textContent = String(minutes).padStart(2, "0");
+  secondsElement.textContent = String(seconds).padStart(2, "0");
+}
+
+// تشغيل العداد فورًا ثم تحديثه كل ثانية
+updateCounter();
+setInterval(updateCounter, 1000);
+
+/* ===== 4. قلوب متحركة في الخلفية ===== */
+
+const heartSymbols = ["♥", "♡", "❤"];
+
+function createHeart() {
+  // تقليل الحركة إذا كان المستخدم يفضل ذلك
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
+  }
+
+  const heart = document.createElement("span");
+  heart.className = "heart-particle";
+
+  heart.textContent =
+    heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+
+  heart.style.left = Math.random() * 100 + "%";
+  heart.style.fontSize = (12 + Math.random() * 20) + "px";
+
+  const duration = 7 + Math.random() * 8;
+  heart.style.animationDuration = duration + "s";
+
+  heartsContainer.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, duration * 1000);
+}
+
+// قلوب هادية باستمرار
+for (let i = 0; i < 10; i++) {
+  setTimeout(createHeart, i * 350);
+}
+
+setInterval(createHeart, 850);
+
+/* ===== التحكم الذكي في كل الأصوات ===== */
+
+const allAudioPlayers = document.querySelectorAll(
+  "audio:not(#backgroundMusic), video"
+);
+
+// إيقاف موسيقى الخلفية عند تشغيل أي صوت آخر
+allAudioPlayers.forEach((player) => {
+  player.addEventListener("play", () => {
+    backgroundMusic.pause();
+  });
+
+  // لما الصوت الآخر يقف، نرجع موسيقى الخلفية
+  player.addEventListener("pause", () => {
+    resumeBackgroundMusicIfNeeded();
+  });
+
+  player.addEventListener("ended", () => {
+    resumeBackgroundMusicIfNeeded();
+  });
+});
+
+// التأكد إن مفيش صوت تاني شغال قبل استئناف الخلفية
+function resumeBackgroundMusicIfNeeded() {
+  const anotherPlayerIsPlaying = [...allAudioPlayers].some(
+    (player) => !player.paused && !player.ended
+  );
+
+  if (
+    !anotherPlayerIsPlaying &&
+    !intro.classList.contains("leaving") &&
+    intro.style.display !== "none"
+  ) {
+    return;
+  }
+
+  if (
+    !anotherPlayerIsPlaying &&
+    intro.style.display === "none"
+  ) {
+    backgroundMusic.play().catch(() => {
+      console.log("اضغط تشغيل لو المتصفح منع استئناف الموسيقى.");
+    });
+  }
+}
+
+  </script>
+
+</body>
+</html>
